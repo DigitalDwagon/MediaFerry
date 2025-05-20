@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mediaferry"
+version = "0.2.0"
+authors = [
+    {name = "DigitalDragon"}
+]
+description = "yt-dlp download management tool"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "internetarchive>=5.0.3"
+]
+
+[project.scripts]
+mediaferry = "mediaferry.main:main"
