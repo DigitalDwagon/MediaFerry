@@ -6,3 +6,4 @@ class Config:
     force: bool = False
     verbose: bool = False
     metadata: dict = field(default_factory=dict)
+    cookies: str = None

@@ -16,6 +16,8 @@ def main():
     parser.add_argument("--force", action="store_true", help="Force download even if an archive.org item already exists")
     parser.add_argument("url", help="URL of the media to download")
     parser.add_argument("--metadata", action=ParseMetadata, default=defaultdict(list), help="Add metadata as key:value pairs")
+    # yt-dlp options
+    parser.add_argument("--cookies", type=str, default=None, help="Path to a cookies.txt file to use for downloading")
     args = parser.parse_args()
 
     config_args = {key: value for key, value in vars(args).items() if key != "url"}

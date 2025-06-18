@@ -160,7 +160,7 @@ def get_ytdlp_options(config, directory) -> dict:
         "consoletitle": True,
         "prefer_ffmpeg": True,
         "call_home": False,
-        #"cookiefile": args.cookie_file,
+        "cookiefile": config.cookies,
         #"proxy": args.proxy,
         #"username": args.username,
         #"password": args.password,
