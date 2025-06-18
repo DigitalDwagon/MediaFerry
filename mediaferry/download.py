@@ -79,8 +79,8 @@ class Media:
             'description': 'description',
             'webpage_url': 'originalurl',
             'uploader': 'creator',
-            'uploader_url': 'channel_url',
-            'channel_url': 'channel_url',
+            'uploader_url': 'channel',
+            'channel_url': 'channel',
         }
 
         for key, value in alias_keys.items():
