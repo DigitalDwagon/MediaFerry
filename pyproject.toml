@@ -12,7 +12,10 @@ description = "yt-dlp download management tool"
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "internetarchive>=5.0.3"
+    "internetarchive>=5.0.3",
+    "dataclasses-json",
+    "yt-dlp",
+    "humanize"
 ]
 
 [project.scripts]
