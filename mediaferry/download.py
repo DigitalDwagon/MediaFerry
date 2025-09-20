@@ -7,8 +7,6 @@ from urllib.parse import urlparse
 import internetarchive
 import humanize
 import yt_dlp
-from yt_dlp import YoutubeDL
-from yt_dlp.plugins import directories
 
 from mediaferry.__version__ import version, yt_dlp_version
 
@@ -49,6 +47,13 @@ class Media:
         print("Generating metadata...")
         metadata = self.get_internetarchive_metadata()
         print(json.dumps(metadata, indent=4))
+
+        # Safety check - if there isn't an MKV, the video wasn't downloaded.
+        if not any(fname.endswith(".mkv") for fname in os.listdir(directory)):
+            print(f"Error: No MKV file found in {directory}. Did the download or remux fail?")
+            with open(os.path.join(directory, "__ia_meta.json.failed_download"), "a") as f:
+                f.write(json.dumps(metadata, indent=4))
+            return False
 
         with open(os.path.join(directory, "__ia_meta.json"), "a") as f:
             f.write(json.dumps(metadata, indent=4))
@@ -161,12 +166,13 @@ def get_ytdlp_options(config, directory) -> dict:
         "prefer_ffmpeg": True,
         "call_home": False,
         "cookiefile": config.cookies,
+        "merge_output_format": "mkv"
         #"proxy": args.proxy,
         #"username": args.username,
         #"password": args.password,
     }
 
-    for key, value in ytdlp_options.items():
+    for key, value in list(ytdlp_options.items()):
         if value is None:
             del ytdlp_options[key]
 
