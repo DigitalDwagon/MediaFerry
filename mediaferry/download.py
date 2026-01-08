@@ -27,12 +27,17 @@ class Media:
 
     def download(self, config):
         print(f"Downloading {self.url} ({self.get_identifier()})...")
+        directory = os.path.abspath(self.get_identifier())
+
+        if os.path.exists(os.path.join(directory, "__ia_meta.json")):
+            print(f"{self.get_identifier()} already has a metadata file, and the download is likely complete. Delete __ia_meta.json to re-run, skipping...")
+            return False
+
         if not config.force and self.internetarchive_item_exists():
             print(f"Item {self.get_identifier()} already exists on archive.org. If you want to download it anyways, use --force.")
             print(f"https://archive.org/details/{self.get_identifier()}")
             return False
 
-        directory = os.path.abspath(self.get_identifier())
         os.makedirs(directory, exist_ok=True)
 
         options = get_ytdlp_options(config, self.get_identifier())

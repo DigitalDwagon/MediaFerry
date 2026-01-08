@@ -1,6 +1,4 @@
 import argparse
-import json
-import os
 from collections import defaultdict
 
 from yt_dlp import YoutubeDL
@@ -8,6 +6,7 @@ from yt_dlp import YoutubeDL
 from mediaferry.config import Config
 from mediaferry.download import Media, get_ytdlp_options
 
+error_summary: list[str] = []
 
 def main():
 
@@ -32,12 +31,24 @@ def download_media(url, config):
         if media_info.get("_type", "video") == "playlist":
             print("Found playlist!")
             for entry in media_info["entries"]:
-                print(f"Downloading playlist entry {entry['webpage_url']}")
+                print("------")
+                if not entry:
+                    print("Entry is empty? Skipping.")
+                    if not "One or more entries was empty. Check if all videos were accessible" in error_summary:
+                        error_summary.append("One or more entries was empty. Check if all videos were accessible")
+                    continue
+
                 media: Media = Media(entry)
                 media.download(config)
         else:
             media: Media = Media(media_info)
             media.download(config)
+
+    if len(error_summary) > 0:
+        print("------")
+        print("Some downloads finished with errors (summary - check the log for more details):")
+        for error in error_summary:
+            print(f"\t{error}")
 
 class ParseMetadata(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
