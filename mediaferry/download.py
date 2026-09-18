@@ -171,6 +171,7 @@ def get_ytdlp_options(config, directory) -> dict:
         "prefer_ffmpeg": True,
         "call_home": False,
         "cookiefile": config.cookies,
+        "format": "bestvideo*[format_id!*=-sr]+bestaudio/best[format_id!*=-sr]", # Exclude AI-upscaled formats (format_id ending with -sr) from download
         "merge_output_format": "mkv"
         #"proxy": args.proxy,
         #"username": args.username,
