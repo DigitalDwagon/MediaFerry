@@ -3,6 +3,7 @@ from collections import defaultdict
 
 from yt_dlp import YoutubeDL
 
+from mediaferry.__version__ import version
 from mediaferry.config import Config
 from mediaferry.download import Media, get_ytdlp_options
 
@@ -11,6 +12,7 @@ error_summary: list[str] = []
 def main():
 
     parser = argparse.ArgumentParser(description="MediaFerry")
+    parser.add_argument("-v", "--version", action="version",  version=f"MediaFerry v{version}", help="Print the current version and exit.")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     parser.add_argument("--force", action="store_true", help="Force download even if an archive.org item already exists")
     parser.add_argument("url", help="URL of the media to download")

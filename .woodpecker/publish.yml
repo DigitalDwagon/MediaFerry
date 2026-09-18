@@ -1,0 +1,18 @@
+when:
+  - event: deployment
+
+steps:
+  - name: publish-pypi
+    image: python:3.12
+
+    environment:
+      PYPI_TOKEN:
+        from_secret: pypi_token
+
+    commands:
+      - python -m pip install --upgrade pip
+      - pip install build twine
+      - python -m build
+      - TWINE_USERNAME=__token__ \
+        TWINE_PASSWORD="$PYPI_TOKEN" \
+        python -m twine upload dist/*
